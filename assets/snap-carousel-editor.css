@@ -1,0 +1,67 @@
+/**
+ * Snap Carousel — Block Style — Editor Preview
+ * Hidden overflow to simulate the number of visible items in the editor.
+ *
+ * @package SnapCarousel
+ * @since   1.0.0
+ */
+
+/* ─────────────────────────────────────────────
+   Container: overflow hidden for preview
+   ───────────────────────────────────────────── */
+
+.editor-styles-wrapper [class*="is-style-snap-carousel"] {
+	display: flex !important;
+	flex-wrap: nowrap !important;
+	justify-content: flex-start !important;
+	gap: 1.5rem;
+	overflow: hidden;
+	padding-block: 0.5rem;
+	padding-inline: 0.25rem;
+}
+
+/* ─────────────────────────────────────────────
+   Items: flex-basis per variant
+   ───────────────────────────────────────────── */
+
+.editor-styles-wrapper [class*="is-style-snap-carousel"] > * {
+	flex-shrink: 0;
+}
+
+/* 3 items + peek (default) */
+.editor-styles-wrapper .is-style-snap-carousel > * {
+	flex-basis: calc(31% - 1rem);
+}
+
+/* 1 item + peek */
+.editor-styles-wrapper .is-style-snap-carousel-single > * {
+	flex-basis: 92%;
+}
+
+/* 2 items + peek */
+.editor-styles-wrapper .is-style-snap-carousel-duo > * {
+	flex-basis: calc(47% - 0.75rem);
+}
+
+/* 4 items + peek */
+.editor-styles-wrapper .is-style-snap-carousel-quad > * {
+	flex-basis: calc(23.5% - 1.125rem);
+}
+
+/* ─────────────────────────────────────────────
+   Visual indicator: carousel badge
+   ───────────────────────────────────────────── */
+
+.editor-styles-wrapper [class*="is-style-snap-carousel"]::after {
+	content: "\2B9C \2B9E";
+	position: absolute;
+	top: 0.5rem;
+	inset-inline-end: 0.5rem;
+	background: rgba(0, 0, 0, 0.6);
+	color: #fff;
+	font-size: 12px;
+	padding: 2px 8px;
+	border-radius: 3px;
+	pointer-events: none;
+	z-index: 10;
+}
