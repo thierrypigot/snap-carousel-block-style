@@ -1,3 +1,5 @@
+![Snap Carousel — Block Style](assets/images/banner-1544x500.png)
+
 # Snap Carousel — Block Style
 
 [![WordPress 6.4+](https://img.shields.io/badge/WordPress-6.4%2B-21759b?logo=wordpress&logoColor=white)](https://wordpress.org)
@@ -14,6 +16,7 @@ This plugin adds **4 block styles** to the WordPress **Group** block (`core/grou
 - **Carousel (1 item)** — full-width slideshow mode
 - **Carousel (2 items)** — displays 2 visible items
 - **Carousel (4 items)** — displays 4 visible items
+
 
 ## Features
 
@@ -55,7 +58,11 @@ This plugin adds **4 block styles** to the WordPress **Group** block (`core/grou
 4. In the sidebar panel → Styles → choose **Carousel (3 items)** (or another variant)
 5. Publish
 
+![Selecting a carousel block style in the Gutenberg sidebar](assets/images/screenshot-1.png)
+
 Navigation buttons and accessibility attributes are automatically injected on the front-end.
+
+![Front-end carousel with peek effect and navigation arrows](assets/images/screenshot-2.png)
 
 ## Customization
 
