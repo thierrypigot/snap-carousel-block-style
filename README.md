@@ -5,7 +5,7 @@
 [![WordPress 6.4+](https://img.shields.io/badge/WordPress-6.4%2B-21759b?logo=wordpress&logoColor=white)](https://wordpress.org)
 [![PHP 8.0+](https://img.shields.io/badge/PHP-8.0%2B-777BB4?logo=php&logoColor=white)](https://www.php.net)
 [![License: GPL v2+](https://img.shields.io/badge/License-GPL--2.0--or--later-blue)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Version 1.0.2](https://img.shields.io/badge/version-1.0.2-green)](#changelog)
+[![Version 1.0.3](https://img.shields.io/badge/version-1.0.3-green)](#changelog)
 [![WCAG 2.2 AA](https://img.shields.io/badge/WCAG-2.2%20AA-228B22)](#accessibility-wcag-22-aa)
 
 > Turn any Group block into an accessible horizontal carousel — in one click. CSS scroll-snap, zero dependency.
@@ -231,6 +231,12 @@ The carousel requires items to flow from the start edge for CSS scroll-snap to w
 
 <details>
 <summary><strong>Changelog</strong></summary>
+
+### 1.0.3
+
+- Fix: unique prefixes (`wearewp_snapcarousel`) for all defines, filters, handles and JS globals — WordPress.org Plugin Review compliance
+- Fix: version constant centralized as `WEAREWP_SNAPCAROUSEL_VERSION`
+- New: GitHub Actions release workflow for automated ZIP packaging
 
 ### 1.0.2
 

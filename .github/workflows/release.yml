@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create plugin zip
+        run: |
+          mkdir -p snap-carousel-block-style
+          cp -r assets readme.txt uninstall.php snap-carousel-block-style.php LICENSE snap-carousel-block-style/
+          zip -r snap-carousel-block-style.zip snap-carousel-block-style/
+
+      - name: Create draft release with zip
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: snap-carousel-block-style.zip
+          generate_release_notes: false

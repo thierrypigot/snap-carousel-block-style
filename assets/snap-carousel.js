@@ -20,7 +20,7 @@
 	}
 
 	// ── Localized strings (passed from PHP via wp_localize_script) ──
-	var l10n = window.snapCarouselL10n || {};
+	var l10n = window.wearewpSnapcarouselL10n || {};
 
 	/**
 	 * Initialize a single carousel

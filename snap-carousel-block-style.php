@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Snap Carousel — Block Style
  * Description:       Turn any Group block into an accessible horizontal carousel — in one click. CSS scroll-snap, keyboard navigation, ARIA, zero dependency.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            WeAre[WP]
  * Author URI:        https://www.wearewp.pro
  * License:           GPL-2.0-or-later
@@ -11,13 +11,13 @@
  * Requires at least: 6.4
  * Requires PHP:      8.0
  *
- * @package SnapCarousel
+ * @package WearewpSnapCarousel
  * @since   1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'SNAP_CAROUSEL_VERSION', '1.0.2' );
+define( 'WEAREWP_SNAPCAROUSEL_VERSION', '1.0.3' );
 
 /**
  * ─────────────────────────────────────────────
@@ -60,22 +60,22 @@ add_action( 'init', function () {
 add_action( 'wp_enqueue_scripts', function () {
 
 	wp_register_style(
-		'snap-carousel-style',
+		'wearewp-snapcarousel-style',
 		plugin_dir_url( __FILE__ ) . 'assets/snap-carousel.css',
 		[],
-		SNAP_CAROUSEL_VERSION
+		WEAREWP_SNAPCAROUSEL_VERSION
 	);
 
 	wp_register_script(
-		'snap-carousel-script',
+		'wearewp-snapcarousel-script',
 		plugin_dir_url( __FILE__ ) . 'assets/snap-carousel.js',
 		[],
-		SNAP_CAROUSEL_VERSION,
+		WEAREWP_SNAPCAROUSEL_VERSION,
 		true
 	);
 
 	// Pass translatable strings to JavaScript
-	wp_localize_script( 'snap-carousel-script', 'snapCarouselL10n', [
+	wp_localize_script( 'wearewp-snapcarousel-script', 'wearewpSnapcarouselL10n', [
 		/* translators: %1$d: current item number, %2$d: total items */
 		'itemOf'  => __( 'Item %1$d of %2$d', 'snap-carousel-block-style' ),
 		/* translators: %1$d: first visible item, %2$d: last visible item, %3$d: total items */
@@ -91,10 +91,10 @@ add_action( 'wp_enqueue_scripts', function () {
 add_action( 'enqueue_block_editor_assets', function () {
 
 	wp_enqueue_style(
-		'snap-carousel-editor-style',
+		'wearewp-snapcarousel-editor-style',
 		plugin_dir_url( __FILE__ ) . 'assets/snap-carousel-editor.css',
 		[],
-		SNAP_CAROUSEL_VERSION
+		WEAREWP_SNAPCAROUSEL_VERSION
 	);
 });
 
@@ -119,8 +119,8 @@ add_filter( 'render_block_core/group', function ( string $block_content, array $
 	}
 
 	// Enqueue assets only when a carousel is actually rendered
-	wp_enqueue_style( 'snap-carousel-style' );
-	wp_enqueue_script( 'snap-carousel-script' );
+	wp_enqueue_style( 'wearewp-snapcarousel-style' );
+	wp_enqueue_script( 'wearewp-snapcarousel-script' );
 
 	// Generate a unique ID for aria-controls
 	$uid = 'snap-carousel-' . wp_unique_id();
@@ -136,7 +136,7 @@ add_filter( 'render_block_core/group', function ( string $block_content, array $
 	 * @param string $label Default label ("Scrollable content").
 	 * @param array  $block The parsed block data.
 	 */
-	$aria_label = apply_filters( 'snap_carousel_aria_label', __( 'Scrollable content', 'snap-carousel-block-style' ), $block );
+	$aria_label = apply_filters( 'wearewp_snapcarousel_aria_label', __( 'Scrollable content', 'snap-carousel-block-style' ), $block );
 
 	// ── Inject ARIA attributes on the container ──
 	// Target the first div of the block

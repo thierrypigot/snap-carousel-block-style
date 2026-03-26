@@ -4,7 +4,7 @@ Tags: carousel, slider, gutenberg, block-style, accessible
 Requires at least: 6.4
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -219,6 +219,11 @@ Snap Carousel is built and maintained by [WeAre[WP]](https://www.wearewp.pro), a
 Need help with your WordPress project? [Get in touch](https://www.wearewp.pro/contact).
 
 == Changelog ==
+
+= 1.0.3 =
+* Fix: unique prefixes (wearewp_snapcarousel) for all defines, filters, handles and JS globals — WordPress.org Plugin Review compliance
+* Fix: version constant centralized as WEAREWP_SNAPCAROUSEL_VERSION
+* New: GitHub Actions release workflow for automated ZIP packaging
 
 = 1.0.2 =
 * Fix: Group justification (center, right, space-between) no longer breaks the carousel
