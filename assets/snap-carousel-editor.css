@@ -18,6 +18,8 @@
 	overflow: hidden;
 	padding-block: 0.5rem;
 	padding-inline: 0.25rem;
+	/* Prevent is-layout-constrained from limiting width */
+	max-width: none;
 }
 
 /* ─────────────────────────────────────────────
