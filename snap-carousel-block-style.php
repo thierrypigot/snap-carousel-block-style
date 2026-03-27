@@ -147,15 +147,20 @@ add_filter( 'render_block_core/group', function ( string $block_content, array $
 		1
 	);
 
-	// ── Inject role="group" + aria-label on each direct child ──
-	// innerBlocks are rendered as direct child divs
-	$slide_index = 0;
-	$block_content = preg_replace_callback(
-		'/(<div\b[^>]*class="[^"]*wp-block-(?:group|column|image|cover|woocommerce)[^"]*"[^>]*)(>)/',
-		function ( $matches ) use ( &$slide_index, $total ) {
-			// Skip the carousel container itself
-			if ( str_contains( $matches[0], 'is-style-snap-carousel' ) ) {
-				return $matches[0];
+	// ── Inject role="group" + aria-label on direct children only ──
+	// Use DOMDocument to target only first-level children of the carousel container.
+	$dom = new \DOMDocument();
+	libxml_use_internal_errors( true );
+	$dom->loadHTML( '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>' . $block_content . '</body></html>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+
+	// Find the carousel container by its unique ID.
+	$container = $dom->getElementById( $uid );
+	if ( $container ) {
+		$slide_index = 0;
+		foreach ( $container->childNodes as $child ) {
+			if ( $child->nodeType !== XML_ELEMENT_NODE ) {
+				continue;
 			}
 			$slide_index++;
 			$label = sprintf(
@@ -164,10 +169,18 @@ add_filter( 'render_block_core/group', function ( string $block_content, array $
 				$slide_index,
 				$total
 			);
-			return $matches[1] . ' role="group" aria-roledescription="' . esc_attr__( 'slide', 'snap-carousel-block-style' ) . '" aria-label="' . esc_attr( $label ) . '"' . $matches[2];
-		},
-		$block_content
-	);
+			$child->setAttribute( 'role', 'group' );
+			$child->setAttribute( 'aria-roledescription', esc_attr__( 'slide', 'snap-carousel-block-style' ) );
+			$child->setAttribute( 'aria-label', esc_attr( $label ) );
+		}
+
+		// Extract only the body content back.
+		$body = $dom->getElementsByTagName( 'body' )->item( 0 );
+		$block_content = '';
+		foreach ( $body->childNodes as $node ) {
+			$block_content .= $dom->saveHTML( $node );
+		}
+	}
 
 	// ── Navigation buttons ──
 	$nav_html = sprintf(
