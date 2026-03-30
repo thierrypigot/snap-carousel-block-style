@@ -190,8 +190,12 @@
 	 * Init on DOM ready
 	 */
 	function init() {
-		var carousels = document.querySelectorAll( '[class*="is-style-snap-carousel"]' );
-		carousels.forEach( initCarousel );
+		var matches = document.querySelectorAll( '[class*="is-style-snap-carousel"]' );
+		matches.forEach( function ( el ) {
+			// For Query blocks, the scrollable container is the inner <ul>
+			var carousel = el.querySelector( '.wp-block-post-template' ) || el;
+			initCarousel( carousel );
+		} );
 	}
 
 	if ( document.readyState === 'loading' ) {

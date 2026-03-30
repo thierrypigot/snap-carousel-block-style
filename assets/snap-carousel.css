@@ -97,6 +97,89 @@
 }
 
 /* ─────────────────────────────────────────────
+   Query Loop: override outer wrapper
+   ───────────────────────────────────────────── */
+
+.wp-block-query[class*="is-style-snap-carousel"] {
+	display: block !important;
+	overflow: visible !important;
+}
+
+/* ─────────────────────────────────────────────
+   Query Loop: <ul> becomes the scroll container
+   ───────────────────────────────────────────── */
+
+[class*="is-style-snap-carousel"] > .wp-block-post-template {
+	display: flex !important;
+	flex-wrap: nowrap !important;
+	justify-content: flex-start !important;
+	align-items: stretch !important;
+	gap: 1.5rem;
+	overflow-x: auto;
+	overflow-y: hidden;
+	scroll-snap-type: x mandatory;
+	scroll-behavior: smooth;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	padding-block: 0.5rem;
+	padding-inline: 0.25rem;
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+[class*="is-style-snap-carousel"] > .wp-block-post-template::-webkit-scrollbar {
+	display: none;
+}
+
+/* Focus visible on the <ul> scroll container */
+[class*="is-style-snap-carousel"] > .wp-block-post-template:focus {
+	outline: 2px solid var(--wp--preset--color--primary, #0073aa);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+[class*="is-style-snap-carousel"] > .wp-block-post-template:focus:not(:focus-visible) {
+	outline: none;
+}
+
+[class*="is-style-snap-carousel"] > .wp-block-post-template:focus-visible {
+	outline: 2px solid var(--wp--preset--color--primary, #0073aa);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* ─────────────────────────────────────────────
+   Query Loop: items (<li>) sizing
+   ───────────────────────────────────────────── */
+
+[class*="is-style-snap-carousel"] > .wp-block-post-template > li {
+	scroll-snap-align: start;
+	flex-shrink: 0;
+}
+
+/* 3 items + peek (default) */
+.is-style-snap-carousel > .wp-block-post-template > li {
+	flex-basis: calc(31% - 1rem);
+}
+
+/* 1 item + peek */
+.is-style-snap-carousel-single > .wp-block-post-template > li {
+	flex-basis: 92%;
+}
+
+/* 2 items + peek */
+.is-style-snap-carousel-duo > .wp-block-post-template > li {
+	flex-basis: calc(47% - 0.75rem);
+}
+
+/* 4 items + peek */
+.is-style-snap-carousel-quad > .wp-block-post-template > li {
+	flex-basis: calc(23.5% - 1.125rem);
+}
+
+/* ─────────────────────────────────────────────
    Responsive: mobile adaptation
    ───────────────────────────────────────────── */
 
@@ -104,6 +187,12 @@
 	/* Tablet: max 2 items + peek */
 	.is-style-snap-carousel > :not(.snap-carousel-nav):not(.snap-carousel-live),
 	.is-style-snap-carousel-quad > :not(.snap-carousel-nav):not(.snap-carousel-live) {
+		flex-basis: calc(46% - 0.75rem);
+	}
+
+	/* Query Loop: tablet */
+	.is-style-snap-carousel > .wp-block-post-template > li,
+	.is-style-snap-carousel-quad > .wp-block-post-template > li {
 		flex-basis: calc(46% - 0.75rem);
 	}
 }
@@ -115,6 +204,15 @@
 	}
 
 	[class*="is-style-snap-carousel"] {
+		gap: 1rem;
+	}
+
+	/* Query Loop: mobile */
+	[class*="is-style-snap-carousel"] > .wp-block-post-template > li {
+		flex-basis: calc(88% - 0.5rem);
+	}
+
+	[class*="is-style-snap-carousel"] > .wp-block-post-template {
 		gap: 1rem;
 	}
 }
