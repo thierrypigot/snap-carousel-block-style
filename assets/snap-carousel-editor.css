@@ -101,6 +101,16 @@
 }
 
 /* ─────────────────────────────────────────────
+   Gallery: editor preview
+   ───────────────────────────────────────────── */
+
+.editor-styles-wrapper .wp-block-gallery[class*="is-style-snap-carousel"] > figcaption {
+	flex-shrink: 0;
+	flex-basis: 100%;
+	scroll-snap-align: none;
+}
+
+/* ─────────────────────────────────────────────
    Visual indicator: carousel badge
    ───────────────────────────────────────────── */
 

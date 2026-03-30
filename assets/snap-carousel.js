@@ -33,11 +33,12 @@
 		var liveRegion = wrapper.querySelector( '.snap-carousel-live' );
 		var rtl        = isRTL( carousel );
 
-		// Get scrollable children (exclude nav and live region)
+		// Get scrollable children (exclude nav, live region, and figcaption)
 		function getSlides() {
 			return Array.from( carousel.children ).filter( function ( child ) {
 				return ! child.classList.contains( 'snap-carousel-nav' )
-					&& ! child.classList.contains( 'snap-carousel-live' );
+					&& ! child.classList.contains( 'snap-carousel-live' )
+					&& child.tagName !== 'FIGCAPTION';
 			});
 		}
 

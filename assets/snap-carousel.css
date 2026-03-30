@@ -97,6 +97,22 @@
 }
 
 /* ─────────────────────────────────────────────
+   Gallery: exclude <figcaption> from slides
+   ───────────────────────────────────────────── */
+
+.wp-block-gallery[class*="is-style-snap-carousel"] > figcaption {
+	flex-shrink: 0;
+	flex-basis: 100%;
+	scroll-snap-align: none;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 5;
+	margin: 0;
+}
+
+/* ─────────────────────────────────────────────
    Query Loop: override outer wrapper
    ───────────────────────────────────────────── */
 

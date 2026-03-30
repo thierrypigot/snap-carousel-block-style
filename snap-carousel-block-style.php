@@ -48,6 +48,7 @@ add_action( 'init', function () {
 	foreach ( $variations as $style ) {
 		register_block_style( 'core/group', $style );
 		register_block_style( 'core/query', $style );
+		register_block_style( 'core/gallery', $style );
 	}
 });
 
@@ -206,7 +207,7 @@ add_filter( 'render_block_core/group', function ( string $block_content, array $
 
 	return wearewp_snapcarousel_wrap( $block_content, $uid );
 
-}, 10, 2 );
+}, 10, 2 ); // end render_block_core/group
 
 /**
  * ─────────────────────────────────────────────
@@ -292,4 +293,90 @@ add_filter( 'render_block_core/query', function ( string $block_content, array $
 
 	return wearewp_snapcarousel_wrap( $block_content, $uid );
 
-}, 10, 2 );
+}, 10, 2 ); // end render_block_core/query
+
+/**
+ * ─────────────────────────────────────────────
+ * render_block filter: inject ARIA + nav (Gallery)
+ * ─────────────────────────────────────────────
+ *
+ * Gallery uses <figure> as wrapper with <figure class="wp-block-image">
+ * children. A <figcaption> may also be present and must be excluded.
+ *
+ * @since 1.1.0
+ */
+add_filter( 'render_block_core/gallery', function ( string $block_content, array $block ): string {
+
+	$class_name = $block['attrs']['className'] ?? '';
+
+	if ( ! preg_match( '/\bis-style-snap-carousel\b/', $class_name ) ) {
+		return $block_content;
+	}
+
+	wp_enqueue_style( 'wearewp-snapcarousel-style' );
+	wp_enqueue_script( 'wearewp-snapcarousel-script' );
+
+	$uid = 'snap-carousel-' . wp_unique_id();
+
+	/** @since 1.0.0 */
+	$aria_label = apply_filters( 'wearewp_snapcarousel_aria_label', __( 'Scrollable content', 'snap-carousel-block-style' ), $block );
+
+	// ── Parse HTML with DOMDocument (gallery uses <figure>, not <div>) ──
+	$dom = new \DOMDocument();
+	libxml_use_internal_errors( true );
+	$dom->loadHTML( '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>' . $block_content . '</body></html>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+
+	// Find the gallery <figure> container
+	$container = null;
+	foreach ( $dom->getElementsByTagName( 'figure' ) as $fig ) {
+		if ( str_contains( $fig->getAttribute( 'class' ) ?? '', 'wp-block-gallery' ) ) {
+			$container = $fig;
+			break;
+		}
+	}
+
+	if ( $container ) {
+		// Set ARIA on the gallery container
+		$container->setAttribute( 'id', $uid );
+		$container->setAttribute( 'role', 'region' );
+		$container->setAttribute( 'aria-roledescription', esc_attr__( 'carousel', 'snap-carousel-block-style' ) );
+		$container->setAttribute( 'aria-label', esc_attr( $aria_label ) );
+		$container->setAttribute( 'tabindex', '0' );
+
+		// Count <figure> children (exclude <figcaption>)
+		$total = 0;
+		foreach ( $container->childNodes as $child ) {
+			if ( $child->nodeType === XML_ELEMENT_NODE && $child->nodeName === 'figure' ) {
+				$total++;
+			}
+		}
+
+		// Label each child <figure> as a slide
+		$slide_index = 0;
+		foreach ( $container->childNodes as $child ) {
+			if ( $child->nodeType !== XML_ELEMENT_NODE || $child->nodeName !== 'figure' ) {
+				continue;
+			}
+			$slide_index++;
+			$label = sprintf(
+				__( '%1$d of %2$d', 'snap-carousel-block-style' ),
+				$slide_index,
+				$total
+			);
+			$child->setAttribute( 'role', 'group' );
+			$child->setAttribute( 'aria-roledescription', esc_attr__( 'slide', 'snap-carousel-block-style' ) );
+			$child->setAttribute( 'aria-label', esc_attr( $label ) );
+		}
+	}
+
+	// Extract body content
+	$body = $dom->getElementsByTagName( 'body' )->item( 0 );
+	$block_content = '';
+	foreach ( $body->childNodes as $node ) {
+		$block_content .= $dom->saveHTML( $node );
+	}
+
+	return wearewp_snapcarousel_wrap( $block_content, $uid );
+
+}, 10, 2 ); // end render_block_core/gallery
