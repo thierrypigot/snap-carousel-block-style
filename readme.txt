@@ -1,35 +1,51 @@
 === Snap Carousel — Block Style ===
 Contributors: wearewp
-Tags: carousel, slider, FSE, gutenberg, block-style, block group accessibility, a11y
+Tags: carousel, slider, a11y, block, gallery
 Requires at least: 6.4
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Turn any Group block into an accessible horizontal carousel — in one click. CSS scroll-snap, zero dependency.
+Accessible carousel for Group, Query Loop & Gallery blocks. WCAG 2.2 AA, CSS scroll-snap, keyboard navigation, zero dependency.
 
 == Description ==
 
-This plugin adds 4 block styles to the WordPress **Group** block (core/group):
+Most WordPress carousel plugins load heavy libraries (Slick, Swiper, jQuery) and fail basic accessibility checks. Screen readers can't navigate them, keyboard users are stuck, and WCAG audits flag them every time.
 
-- **Carousel (3 items)** — displays 3 visible items
-- **Carousel (1 item)** — full-width slideshow mode
-- **Carousel (2 items)** — displays 2 visible items
-- **Carousel (4 items)** — displays 4 visible items
+Snap Carousel takes a different approach: **CSS scroll-snap does the scrolling, proper ARIA attributes do the rest.** No JavaScript library, no configuration panel, no learning curve — just a block style to apply in one click.
+
+Built by [WeAre[WP]](https://www.wearewp.pro), a WordPress agency specializing in accessible websites and RGAA audits. This plugin exists because we needed a carousel that actually passes our own audits.
+
+= Supported blocks =
+
+Apply any of the 4 carousel styles to:
+
+- **Group block** (`core/group`) — any child blocks become slides
+- **Query Loop block** (`core/query`) — posts scroll as carousel slides
+- **Gallery block** (`core/gallery`) — images scroll as carousel slides
+
+= Variants =
+
+- **Carousel (3 items)** — 3 visible items + peek
+- **Carousel (1 item)** — full-width slideshow
+- **Carousel (2 items)** — 2 visible items + peek
+- **Carousel (4 items)** — 4 visible items + peek
 
 = Features =
 
-- 100% CSS scroll-snap for scrolling
+- 100% CSS scroll-snap — no Slick, no Swiper, no jQuery
 - Prev/next navigation buttons
 - Keyboard navigation (Arrow keys, Home, End)
 - Full ARIA attributes (role="region", aria-roledescription, aria-live)
 - **Peek effect**: partial visibility of the next item, signaling scrollable content
 - Responsive (auto tablet/mobile adaptation)
 - Respects `prefers-reduced-motion`
+- Works with Group, Query Loop, and Gallery blocks
 - Works with any child block (images, columns, groups, WooCommerce…)
-- ~2 KB CSS + ~2 KB JS, zero dependency
+- Lightweight: ~2 KB CSS + ~2 KB JS, zero external dependency
+- Full RTL (right-to-left) language support
 - Fully internationalized (i18n ready, French translation included)
 - Easy to customize via CSS custom properties or overrides
 
@@ -44,6 +60,11 @@ This plugin adds 4 block styles to the WordPress **Group** block (core/group):
 - Touch targets 44×44px minimum
 - Visible focus indicator
 
+== Screenshots ==
+
+1. Selecting a carousel block style in the Gutenberg sidebar
+2. Front-end carousel with peek effect and navigation arrows
+
 == Installation ==
 
 1. Upload the `snap-carousel-block-style` folder to `/wp-content/plugins/`
@@ -52,11 +73,26 @@ This plugin adds 4 block styles to the WordPress **Group** block (core/group):
 
 == Usage ==
 
+= With a Group block =
+
 1. In the editor, create a **Group** block
 2. Set the group layout to **Row**
 3. Add child blocks (images, groups, columns…)
 4. In the sidebar panel → Styles → choose **Carousel (3 items)** (or another variant)
 5. Publish
+
+= With a Query Loop block =
+
+1. Insert a **Query Loop** block
+2. Configure the query (post type, filters, number of items…)
+3. In the sidebar panel → Styles → choose a Carousel variant
+4. Publish — posts scroll horizontally as carousel slides
+
+= With a Gallery block =
+
+1. Insert a **Gallery** block and add images
+2. In the sidebar panel → Styles → choose a Carousel variant
+3. Publish — images scroll horizontally as carousel slides
 
 Navigation buttons and accessibility attributes are automatically injected on the front-end.
 
@@ -162,7 +198,7 @@ Yes. Snap Carousel uses standard WordPress Block Styles API and CSS custom prope
 
 = What types of content can I put inside the carousel? =
 
-Any block that WordPress allows inside a Group block: images, columns, groups, cover blocks, WooCommerce product blocks, custom HTML… The carousel simply applies horizontal scroll-snap to the Group's direct children.
+Any block that WordPress allows inside a Group, Query Loop, or Gallery block: images, columns, groups, cover blocks, WooCommerce product blocks, custom HTML… The carousel applies horizontal scroll-snap to the block's direct children (or posts/images for Query Loop and Gallery).
 
 = Is this plugin accessible? =
 
@@ -178,11 +214,11 @@ No. The total footprint is approximately 2 KB CSS + 2 KB JS (minified), with zer
 
 = Can I use different carousel variants on the same page? =
 
-Yes. Each Group block independently gets its own style. You can have a 1-item slideshow hero at the top, a 3-item carousel in the middle, and a 4-item grid-style carousel at the bottom — all on the same page.
+Yes. Each block independently gets its own style. You can have a 1-item slideshow hero at the top, a 3-item carousel in the middle, and a 4-item grid-style carousel at the bottom — all on the same page.
 
 = What happens if I deactivate the plugin? =
 
-Your content remains intact. The Group block reverts to its default Row layout. No data is lost — the plugin only adds a visual style and does not modify your content in the database.
+Your content remains intact. Blocks revert to their default layout. No data is lost — the plugin only adds a visual style and does not modify your content in the database.
 
 = Can I customize the carousel appearance? =
 
@@ -200,6 +236,22 @@ No, intentionally. Auto-playing carousels are a well-documented accessibility ba
 
 The carousel requires items to flow from the start edge for CSS scroll-snap to work properly. The justification control (left, center, right, space-between) is automatically overridden to ensure correct scroll behavior. This is a browser constraint, not a plugin limitation. RTL (right-to-left) languages are fully supported — items automatically flow from right to left.
 
+= Can I use the carousel with a Query Loop block? =
+
+Yes. Since version 1.0.4, you can apply any carousel style directly to a Query Loop block. Posts are rendered as horizontal slides with full ARIA attributes. This is ideal for "latest posts" or "related posts" sections.
+
+= Can I use the carousel with a Gallery block? =
+
+Yes. Apply a carousel style to any Gallery block and images scroll horizontally. The gallery caption (figcaption) is preserved and excluded from the carousel slides.
+
+= How does this compare to Slick, Swiper, or other carousel libraries? =
+
+Snap Carousel does not use any JavaScript carousel library. Scrolling is handled entirely by CSS scroll-snap, which is native to all modern browsers. JavaScript is only used for navigation buttons, keyboard handling, and screen reader announcements (~2 KB). This means fewer conflicts, better performance, and no library updates to track.
+
+= Does this plugin pass RGAA / WCAG accessibility audits? =
+
+Yes. The plugin was built specifically to pass RGAA and WCAG 2.2 AA audits. It implements the WAI-ARIA carousel pattern: role="region", aria-roledescription="carousel" on the container, role="group" on each slide, aria-live region for announcements, keyboard navigation (Arrow, Home, End), and 44×44px minimum touch targets.
+
 = Does the carousel support RTL languages? =
 
 Yes. The carousel detects the page direction automatically. In RTL mode (Arabic, Hebrew, etc.), items flow from right to left, navigation arrows adapt their direction, and keyboard navigation (ArrowLeft/ArrowRight) follows the expected visual direction.
@@ -214,11 +266,19 @@ Yes. The carousel detects the page direction automatically. In RTL mode (Arabic,
 
 == About ==
 
-Snap Carousel is built and maintained by [WeAre[WP]](https://www.wearewp.pro), a french WordPress agency specializing in accessible, high-performance websites for businesses of all sizes.
+Snap Carousel is built and maintained by [WeAre[WP]](https://www.wearewp.pro), a French WordPress agency specializing in accessible websites and RGAA compliance audits. This plugin was built to solve a real problem: every carousel plugin we audited failed basic accessibility requirements. So we built one that passes our own audits.
 
 Need help with your WordPress project? [Get in touch](https://www.wearewp.pro/contact).
 
 == Changelog ==
+
+= 1.0.4 =
+* New: Query Loop block support — apply carousel styles to core/query blocks, posts scroll as slides
+* New: Gallery block support — apply carousel styles to core/gallery blocks, images scroll as slides
+* Enhancement: extracted shared PHP helpers (wearewp_snapcarousel_nav_html, wearewp_snapcarousel_wrap) for DRY rendering
+* Enhancement: gallery figcaption excluded from carousel slides (CSS + JS)
+* Enhancement: responsive rules for Query Loop and Gallery variants (tablet + mobile)
+* Enhancement: editor preview CSS for Query Loop and Gallery blocks
 
 = 1.0.3 =
 * Fix: unique prefixes (wearewp_snapcarousel) for all defines, filters, handles and JS globals — WordPress.org Plugin Review compliance

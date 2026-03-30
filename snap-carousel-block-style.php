@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       Snap Carousel — Block Style
- * Description:       Turn any Group block into an accessible horizontal carousel — in one click. CSS scroll-snap, keyboard navigation, ARIA, zero dependency.
- * Version:           1.0.3
+ * Description:       Turn any Group, Query Loop, or Gallery block into an accessible horizontal carousel — in one click. CSS scroll-snap, keyboard navigation, ARIA, zero dependency.
+ * Version:           1.0.4
  * Author:            WeAre[WP]
  * Author URI:        https://www.wearewp.pro
  * License:           GPL-2.0-or-later
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WEAREWP_SNAPCAROUSEL_VERSION', '1.0.3' );
+define( 'WEAREWP_SNAPCAROUSEL_VERSION', '1.0.4' );
 
 /**
  * ─────────────────────────────────────────────
@@ -189,6 +189,7 @@ add_filter( 'render_block_core/group', function ( string $block_content, array $
 			}
 			$slide_index++;
 			$label = sprintf(
+				/* translators: %1$d: current slide number, %2$d: total slides */
 				__( '%1$d of %2$d', 'snap-carousel-block-style' ),
 				$slide_index,
 				$total
@@ -274,6 +275,7 @@ add_filter( 'render_block_core/query', function ( string $block_content, array $
 			}
 			$slide_index++;
 			$label = sprintf(
+				/* translators: %1$d: current slide number, %2$d: total slides */
 				__( '%1$d of %2$d', 'snap-carousel-block-style' ),
 				$slide_index,
 				$total
@@ -360,6 +362,7 @@ add_filter( 'render_block_core/gallery', function ( string $block_content, array
 			}
 			$slide_index++;
 			$label = sprintf(
+				/* translators: %1$d: current slide number, %2$d: total slides */
 				__( '%1$d of %2$d', 'snap-carousel-block-style' ),
 				$slide_index,
 				$total
