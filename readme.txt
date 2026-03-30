@@ -1,6 +1,6 @@
 === Snap Carousel — Block Style ===
 Contributors: wearewp
-Tags: carousel, slider, gutenberg, block-style, accessible
+Tags: carousel, slider, FSE, gutenberg, block-style, block group accessibility, a11y
 Requires at least: 6.4
 Tested up to: 6.9
 Requires PHP: 8.0
